@@ -31,29 +31,23 @@ var myMap = L.map("map", {
     // Create a new marker cluster group
     //var markers = L.markerClusterGroup();
 
-    var heatArray = [];
-  
-    // Loop through data
-    for (var i = 0; i < response.length; i++) {
   
       // Set the data location property to a variable
-      var location = response[i].geometry.location;
+
   
-      // Check for location property
-      if (location) {
-  
-        // Add a new marker to the cluster group and bind a pop-up
-        heatArray.push([location.coordinates[1], location.coordinates[0]])
-          
-      }
-  
-    }
-  
-    var heat = L.heatLayer(heatArray, {
-        radius: 20,
-        blur: 35
-      }).addTo(myMap);
-    
-  
-  });
+      for (var i = 0; i < response.length; i++) {
+        var location = response[i].geometry.location;
+        
+        L.circle([location.coordinates[1], location.coordinates[0]], {
+          fillOpacity: 0.75,
+          color: "white",
+          fillColor: "purple",
+          // Setting our circle's radius equal to the output of our markerSize function
+          // This will make our marker's size proportionate to its population
+          radius: markerSize(response[i].mag)
+        }).bindPopup("<h1>" + response[i].mag + "</h1> <hr> <h3>Population: " + response[i].place + "</h3>").addTo(myMap);
+    }}
+      
+
+  );
   

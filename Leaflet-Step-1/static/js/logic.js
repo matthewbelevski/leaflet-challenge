@@ -38,7 +38,8 @@ L.geoJSON(earthquakeData, {
   var earthquakes = L.geoJSON(earthquakeData, {
     pointToLayer: function (geoJsonPoint, latlng) {
         return L.circleMarker(latlng, { radius: (geoJsonPoint.properties.mag * 4) });
-    }
+    },
+    onEachFeature: onEachFeature
   
   })
 

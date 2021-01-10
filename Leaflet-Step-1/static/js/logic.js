@@ -17,27 +17,39 @@ function createFeatures(earthquakeData) {
     layer.bindPopup("<h3>" + feature.properties.place +
       "</h3><hr><p>" + new Date(feature.properties.time) + "</p>");
   }
+
+  var colour = "";
+
+  function colour(data) {
+    if (data.properties.mag > 1) {
+        color = '#e1f34d'
+    } else if (data.properties.mag > 2) {
+      colour = '#f3db4d'
+    } else if (data.properties.mag > 3) {
+      colour = '#f3ba4d'
+    } else if (data.properties.mag > 4) {
+      colour = '#f0a74d'
+    } else if (data.properties.mag > 5) {
+      colour = '#f06b6b'
+    } else {
+      colour = '#b7f34d'
+    }
+};
   
   var geojsonMarkerOptions = {
-    fillColor: "#ff7800",
-    color: "#000",
+    fillColor: colour,
+    color: colour,
     weight: 1,
     opacity: 1,
     fillOpacity: 0.8
 };
 
-L.geoJSON(earthquakeData, {
-  pointToLayer: function (geoJsonPoint, latlng) {
-      return L.circleMarker(latlng, { radius: geoJsonPoint.properties.mag });
-  }
-
-})
 
   // Create a GeoJSON layer containing the features array on the earthquakeData object
   // Run the onEachFeature function once for each piece of data in the array
   var earthquakes = L.geoJSON(earthquakeData, {
-    pointToLayer: function (geoJsonPoint, latlng) {
-        return L.circleMarker(latlng, { radius: (geoJsonPoint.properties.mag * 4) });
+    pointToLayer: function (data, latlng) {
+        return L.circleMarker(latlng, { radius: (data.properties.mag * 4)}, geojsonMarkerOptions);
     },
     onEachFeature: onEachFeature
   
